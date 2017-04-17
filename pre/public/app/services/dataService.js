@@ -1,6 +1,7 @@
 (function () {
 
-    angular.module('app').factory('dataService', function () {
+    angular.module('app').factory('dataService', dataService);
+    function dataService() {
         function getAllBooks() {
             return [
                 {
@@ -51,5 +52,5 @@
             getAllBooks: getAllBooks,
             getAllReaders: getAllReaders
         };
-    });
+    }
 }());
