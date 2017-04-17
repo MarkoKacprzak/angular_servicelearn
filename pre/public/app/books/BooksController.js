@@ -6,13 +6,23 @@
     function BooksController(books, dataService, logger, badgeService) {
         var vm = this;
         vm.appName = books.appName;
-        vm.allBooks = dataService.getAllBooks();
+        //vm.allBooks = dataService.getAllBooks();
+        function getBooksSuccess(books){
+            vm.allBooks = books;
+            vm.allBooks.forEach(function (element) {
+                logger.logBook(element);
+            });
+        }
+        function getBooksError(message){
+            console.log(message);
+        }
+        dataService.getAllBooks()
+            .then(getBooksSuccess, getBooksError);
+
         vm.allReaders = dataService.getAllReaders();
         vm.getBadge = badgeService.retrieveBadge;
         logger.output('BooksController has been created.')
-        vm.allBooks.forEach(function (element) {
-            logger.logBook(element);
-        });
+      
     }
 
 }());

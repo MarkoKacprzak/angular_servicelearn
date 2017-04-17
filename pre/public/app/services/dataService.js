@@ -2,10 +2,10 @@
     "use strict";
     angular.module('app')
         .factory('dataService', dataService);
-    function dataService(logger) {
+    function dataService($q, $timeout, logger) {
         function getAllBooks() {
-            logger.output('getting all books');
-            return [
+            //logger.output('getting all books');
+            var bookArray = [
                 {
                     book_id: 1,
                     title: 'Harry Potter and the Deathly Hallows',
@@ -25,10 +25,23 @@
                     yearPublished: 1963
                 }
             ];
+
+            var deferred = $q.defer();
+
+            $timeout(function() {
+                var successful = true;
+                if (successful){
+                    deferred.resolve(bookArray);
+                }
+                else {
+                    deferred.reject('Error retrieving books.');
+                }
+            },1000);            
+            return deferred.promise;
         };
 
         function getAllReaders() {
-            logger.output('getting all readers');            
+            //logger.output('getting all readers');            
             return [
                 {
                     reader_id: 1,
@@ -57,5 +70,5 @@
         };
     }
 
-    dataService.$inject = ['logger'];
+    dataService.$inject = ['$q', '$timeout', 'logger'];
 }());
