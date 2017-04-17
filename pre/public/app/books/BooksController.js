@@ -16,8 +16,11 @@
         function getBooksError(message){
             console.log(message);
         }
+        function getBooksNotify(notifyMessafe){
+             console.log(notifyMessafe);
+        }
         dataService.getAllBooks()
-            .then(getBooksSuccess, getBooksError);
+            .then(getBooksSuccess, getBooksError, getBooksNotify);
 
         vm.allReaders = dataService.getAllReaders();
         vm.getBadge = badgeService.retrieveBadge;

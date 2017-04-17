@@ -4,7 +4,7 @@
         .factory('dataService', dataService);
     function dataService($q, $timeout, logger) {
         function getAllBooks() {
-            //logger.output('getting all books');
+            logger.output('getting all books');
             var bookArray = [
                 {
                     book_id: 1,
@@ -27,6 +27,9 @@
             ];
 
             var deferred = $q.defer();
+            $timeout(function() {
+                deferred.notify('Preparing books to return!');
+            },500);    
 
             $timeout(function() {
                 var successful = true;
@@ -41,7 +44,7 @@
         };
 
         function getAllReaders() {
-            //logger.output('getting all readers');            
+            logger.output('getting all readers');            
             return [
                 {
                     reader_id: 1,
