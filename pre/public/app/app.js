@@ -1,7 +1,7 @@
 (function () {
     "use strict";   
     var app = angular.module('app', []);
-    app.provider('books', function (constants) {
+    app.provider('books', ['constants', function (constants) {
         this.$get = function () {
             var appName = constants.APP_TITLE;
             var appDesc = constants.APP_DESCRIPTION;
@@ -20,11 +20,11 @@
         this.setIncludeVersionInTitle = function (value) {
             includeVersionInTitle = value;
         };
-    });
+    }]);
 
-    app.config(function (booksProvider, constants, badgeServiceProvider) {
+    app.config(['booksProvider', 'constants', 'badgeServiceProvider', function (booksProvider, constants, badgeServiceProvider) {
         booksProvider.setIncludeVersionInTitle(true);
         console.log('title from constants services ' + constants.APP_TITLE);
         console.log(badgeServiceProvider.$get().retrieveBadge(0));
-    });
+    }]);
 }());
