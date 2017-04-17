@@ -1,8 +1,10 @@
 (function () {
     "use strict";
-    angular.module('app').factory('dataService', dataService);
-    function dataService() {
+    angular.module('app')
+        .factory('dataService', dataService);
+    function dataService(logger) {
         function getAllBooks() {
+            logger.output('getting all books');
             return [
                 {
                     book_id: 1,
@@ -26,6 +28,7 @@
         };
 
         function getAllReaders() {
+            logger.output('getting all readers');            
             return [
                 {
                     reader_id: 1,
@@ -53,4 +56,6 @@
             getAllReaders: getAllReaders
         };
     }
+
+    dataService.$inject = ['logger'];
 }());
