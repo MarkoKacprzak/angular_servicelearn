@@ -22,8 +22,9 @@
         };
     });
 
-    app.config(function (booksProvider, constants) {
+    app.config(function (booksProvider, constants, badgeServiceProvider) {
         booksProvider.setIncludeVersionInTitle(true);
         console.log('title from constants services ' + constants.APP_TITLE);
+        console.log(badgeServiceProvider.$get().retrieveBadge(0));
     });
 }());
