@@ -30,11 +30,20 @@
             .then(getBooksSuccess, getBooksError, getBooksNotify)
             .catch(errorCallback)
             .finally(getAllBookComplete);
-
-        vm.allReaders = dataService.getAllReaders();
+        
+        function getReadersSuccess(readers) {
+            vm.allReaders = readers;
+        }
+        function getAllReadersComplete(){
+            console.log('Just finished loading readers');
+        }
+        
+        dataService.getAllReaders()
+            .then(getReadersSuccess)
+            .catch(errorCallback)
+            .finally(getAllReadersComplete);
         vm.getBadge = badgeService.retrieveBadge;
-        logger.output('BooksController has been created.')
-      
+        logger.output('BooksController has been created.');
     }
 
 }());
