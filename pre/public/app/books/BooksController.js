@@ -1,12 +1,26 @@
 (function() {
     "use strict";
     angular.module('app')
-        .controller('BooksController', ['books', 'dataService', 'logger', 'badgeService', BooksController]);
+        .controller('BooksController', ['$q','books', 'dataService', 'logger', 'badgeService', BooksController]);
 
-    function BooksController(books, dataService, logger, badgeService) {
+    function BooksController($q, books, dataService, logger, badgeService) {
         var vm = this;
         vm.appName = books.appName;
+        var booksPromise = dataService.getAllBooks();
+        var readerssPromise = dataService.getAllReaders();
+        
+        function getAllDataSuccess(dataArray) {
+            vm.allBooks = dataArray[0];
+            vm.allReaders = dataArray[1];
+        }
+        function getAllDataError(reason){
+            console.log(reason);
+        }
+        $q.all([booksPromise, readerssPromise])
+            .then(getAllDataSuccess)
+            .catch(getAllDataError);
         //vm.allBooks = dataService.getAllBooks();
+        /*
         function getBooksSuccess(books) {
             vm.allBooks = books;
             vm.allBooks.forEach(function (element) {
@@ -42,6 +56,7 @@
             .then(getReadersSuccess)
             .catch(errorCallback)
             .finally(getAllReadersComplete);
+        */
         vm.getBadge = badgeService.retrieveBadge;
         logger.output('BooksController has been created.');
     }
