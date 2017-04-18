@@ -1,6 +1,6 @@
 (function () {
     "use strict";   
-    var app = angular.module('app', []);
+    var app = angular.module('app', ['ngRoute']);
     app.provider('books', ['constants', function (constants) {
         this.$get = function () {
             var appName = constants.APP_TITLE;
@@ -22,9 +22,20 @@
         };
     }]);
 
-    app.config(['booksProvider', 'constants', 'badgeServiceProvider', function (booksProvider, constants, badgeServiceProvider) {
+    app.config(['$routeProvider','booksProvider', 'constants', 'badgeServiceProvider', function ($routeProvider, booksProvider, constants, badgeServiceProvider) {
         booksProvider.setIncludeVersionInTitle(true);
         console.log('title from constants services ' + constants.APP_TITLE);
         console.log(badgeServiceProvider.$get().retrieveBadge(0));
+        $routeProvider
+            .when('/', {
+                templateUrl: '/app/templates/books.html',
+                controller: 'BooksController',
+                controllerAs: 'books'
+            })
+            .when('/AddBook', {
+                templateUrl: '/app/templates/addBook.html',
+                controller: 'AddBookController',
+                controllerAs: 'addBook'
+            });
     }]);
 }());
