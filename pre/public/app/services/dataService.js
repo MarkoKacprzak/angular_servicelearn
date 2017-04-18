@@ -32,7 +32,7 @@
             },500);
 
             $timeout(function() {
-                var successful = true;
+                var successful = false;
                 if (successful){
                     deferred.resolve(bookArray);
                 }

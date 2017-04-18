@@ -23,9 +23,13 @@
         function getBooksNotify(notifyMessafe) {
            console.log(notifyMessafe);
         }
+        function getAllBookComplete(){
+            console.log('Just finished loading books');
+        }
         dataService.getAllBooks()
             .then(getBooksSuccess, getBooksError, getBooksNotify)
-            .catch(errorCallback);
+            .catch(errorCallback)
+            .finally(getAllBookComplete);
 
         vm.allReaders = dataService.getAllReaders();
         vm.getBadge = badgeService.retrieveBadge;
