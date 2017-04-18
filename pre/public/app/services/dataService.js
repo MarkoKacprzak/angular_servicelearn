@@ -29,10 +29,10 @@
             var deferred = $q.defer();
             $timeout(function() {
                 deferred.notify('Preparing books to return!');
-            },500);    
+            },500);
 
             $timeout(function() {
-                var successful = true;
+                var successful = false;
                 if (successful){
                     deferred.resolve(bookArray);
                 }

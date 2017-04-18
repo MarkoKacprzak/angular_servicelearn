@@ -7,20 +7,25 @@
         var vm = this;
         vm.appName = books.appName;
         //vm.allBooks = dataService.getAllBooks();
-        function getBooksSuccess(books){
+        function getBooksSuccess(books) {
             vm.allBooks = books;
             vm.allBooks.forEach(function (element) {
                 logger.logBook(element);
             });
         }
-        function getBooksError(message){
+        function getBooksError(message) {
             console.log(message);
+            throw 'error in getBooksError';
         }
-        function getBooksNotify(notifyMessafe){
-             console.log(notifyMessafe);
+        function errorCallback(message) {
+            console.log('Some Error: ' + message);
+        }
+        function getBooksNotify(notifyMessafe) {
+           console.log(notifyMessafe);
         }
         dataService.getAllBooks()
-            .then(getBooksSuccess, getBooksError, getBooksNotify);
+            .then(getBooksSuccess, getBooksError, getBooksNotify)
+            .catch(errorCallback);
 
         vm.allReaders = dataService.getAllReaders();
         vm.getBadge = badgeService.retrieveBadge;
