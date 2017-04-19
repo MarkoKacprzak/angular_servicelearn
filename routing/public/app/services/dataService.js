@@ -32,7 +32,7 @@
             },500);
 
             $timeout(function() {
-                var successful = true;
+                var successful = true;//Math.random() < 0.5 ? true : false;
                 if (successful){
                     deferred.resolve(bookArray);
                 }

@@ -1,9 +1,9 @@
 (function() {
     "use strict";
     angular.module('app')
-        .controller('BooksController', ['$q','books', 'dataService', 'logger', 'badgeService', BooksController]);
+        .controller('BooksController', ['$q','books', 'dataService', 'logger', 'badgeService', '$cookies', '$cookieStore', BooksController]);
 
-    function BooksController($q, books, dataService, logger, badgeService) {
+    function BooksController($q, books, dataService, logger, badgeService, $cookies, $cookieStore) {
         var vm = this;
         vm.appName = books.appName;
         var booksPromise = dataService.getAllBooks();
@@ -58,6 +58,8 @@
             .finally(getAllReadersComplete);
         */
         vm.getBadge = badgeService.retrieveBadge;
+        vm.favoriteBook = $cookies.favoriteBook;
+        vm.lastEdited = $cookieStore.get('lastEdited');
         logger.output('BooksController has been created.');
     }
 
