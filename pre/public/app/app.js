@@ -1,6 +1,10 @@
 (function () {
     "use strict";   
+    var angular = require('angular');
     var app = angular.module('app', []);
+
+    require('./services')(app);
+    require('./books')(app);
     app.provider('books', ['constants', function (constants) {
         this.$get = function () {
             var appName = constants.APP_TITLE;

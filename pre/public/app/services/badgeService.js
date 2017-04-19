@@ -1,4 +1,4 @@
-(function () {
+module.exports = function (app) {
     "use stricts";
     function retrieveBadge(minutesRead) {
         var badge = null;
@@ -15,8 +15,7 @@
         return badge;
     }
 
-    angular.module('app')
-        .value('badgeService', {
-            retrieveBadge: retrieveBadge
-        });
-}());
+    app.value('badgeService', {
+        retrieveBadge: retrieveBadge
+    });
+};

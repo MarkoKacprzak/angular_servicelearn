@@ -1,7 +1,6 @@
-(function () {
+module.exports = function (app) {
     "use strict";
-    angular.module('app')
-        .factory('dataService', dataService);
+    app.factory('dataService', dataService);
     function dataService($q, $timeout, logger) {
         function getAllBooks() {
             logger.output('getting all books');
@@ -79,4 +78,4 @@
     }
 
     dataService.$inject = ['$q', '$timeout', 'logger'];
-}());
+};
