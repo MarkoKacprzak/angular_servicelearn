@@ -1,14 +1,17 @@
-(function (){
+(function() {
     "use strict";
-    function EditBookController($routeParams, dataService) {
+
+    function EditBookController($routeParams, books) {
+    //dataService) {
         var vm = this;
-        dataService.getAllBooks()
-            .then(function (books) {
-                vm.currentBook = books.filter(function (item) {
-                    return item.book_id == $routeParams.bookID;
-                })[0];
-            });
+       // dataService.getAllBooks()
+       //     .then(function (books) {
+        vm.currentBook = books.filter(function (item) {
+            return item.book_id == $routeParams.bookID;
+        })[0];
+       //     });
     }
-    angular.module('app')
-        .controller('EditBookController', ['$routeParams','dataService', EditBookController]);
+     angular.module('app')
+        .controller('EditBookController', ['$routeParams', 'books', //dataService,
+                EditBookController]);
 }());

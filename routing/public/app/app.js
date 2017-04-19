@@ -40,7 +40,13 @@
             .when('/EditBook/:bookID', {
                 templateUrl: '/app/templates/editBook.html',
                 controller: 'EditBookController',
-                controllerAs: 'bookEditor'
+                controllerAs: 'bookEditor',
+                resolve: {
+                    books: function (dataService) {
+                        //throw 'error getting books';
+                        return dataService.getAllBooks();
+                    }
+                }
             })
             .otherwise('/');
     }]);
