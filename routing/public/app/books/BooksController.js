@@ -1,14 +1,13 @@
-(function() {
+module.exports = function (app) {
     "use strict";
-    angular.module('app')
-        .controller('BooksController', ['$q','books', 'dataService', 'logger', 'badgeService', BooksController]);
+    app.controller('BooksController', ['$q','books', 'dataService', 'logger', 'badgeService', BooksController]);
 
     function BooksController($q, books, dataService, logger, badgeService) {
         var vm = this;
         vm.appName = books.appName;
         var booksPromise = dataService.getAllBooks();
         var readerssPromise = dataService.getAllReaders();
-        
+
         function getAllDataSuccess(dataArray) {
             vm.allBooks = dataArray[0];
             vm.allReaders = dataArray[1];
@@ -61,4 +60,4 @@
         logger.output('BooksController has been created.');
     }
 
-}());
+};

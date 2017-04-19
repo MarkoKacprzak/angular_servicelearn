@@ -1,4 +1,4 @@
-(function (){
+module.exports = function (app) {
     "use strict";
     function EditBookController($routeParams, dataService) {
         var vm = this;
@@ -9,6 +9,5 @@
                 })[0];
             });
     }
-    angular.module('app')
-        .controller('EditBookController', ['$routeParams','dataService', EditBookController]);
-}());
+    app.controller('EditBookController', ['$routeParams','dataService', EditBookController]);
+};

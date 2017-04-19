@@ -1,10 +1,9 @@
-(function () {
+module.exports = function (app) {
     "use strict";
-    angular.module('app')
-        .constant('constants', {
-            APP_TITLE: 'Book Logger',
-            APP_DESCRIPTION: 'Track which books you read ',
-            APP_VERSION: '1.0'
+    app.constant('constants', {
+        APP_TITLE: 'Book Logger',
+        APP_DESCRIPTION: 'Track which books you read ',
+        APP_VERSION: '1.0'
     });
 
-}());
+};

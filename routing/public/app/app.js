@@ -1,6 +1,11 @@
 (function () {
     "use strict";   
-    var app = angular.module('app', ['ngRoute']);
+    var angular = require('angular');
+    var ngRoute = require('angular-route');
+    var app = angular.module('app',  [ngRoute]);
+    require('./services')(app);
+    require('./books')(app);
+   
     app.provider('books', ['constants', function (constants) {
         this.$get = function () {
             var appName = constants.APP_TITLE;
@@ -28,17 +33,17 @@
         console.log(badgeServiceProvider.$get().retrieveBadge(0));
         $routeProvider
             .when('/', {
-                templateUrl: '/app/templates/books.html',
+                template: require('./templates/books.html'),
                 controller: 'BooksController',
                 controllerAs: 'books'
             })
             .when('/AddBook', {
-                templateUrl: '/app/templates/addBook.html',
+                template: require('./templates/addBook.html'),
                 controller: 'AddBookController',
                 controllerAs: 'addBook'
             })
             .when('/EditBook/:bookID', {
-                templateUrl: '/app/templates/editBook.html',
+                template: require('./templates/editBook.html'),
                 controller: 'EditBookController',
                 controllerAs: 'bookEditor'
             })

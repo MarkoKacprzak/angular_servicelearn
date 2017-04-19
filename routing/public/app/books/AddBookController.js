@@ -1,8 +1,7 @@
-(function (){
+module.exports = function (app) {
     "use strict";
     function AddBookController() {
 
     }
-    angular.module('app')
-        .controller('AddBookController', AddBookController);
-}());
+    app.controller('AddBookController', AddBookController);
+};
