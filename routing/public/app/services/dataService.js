@@ -2,7 +2,25 @@
     "use strict";
     angular.module('app')
         .factory('dataService', dataService);
-    function dataService($q, $timeout, logger) {
+    function dataService($q, $timeout, logger, $http, constants) {
+        function sendResponseData(response) {
+            return response.data;
+        }
+        function sendGetBooksError(response) {
+            return $q.reject('Error retrieving books(s). (HTTP status: ' + response.status + ')');
+        }
+        function getAllBooks() {
+            return $http({
+                method: 'GET',
+                url: 'api/books',
+                headers: {
+                    'PS-BookLogger-Version': constants.APP_VERSION
+                }
+            })
+                .then(sendResponseData)
+                .catch(sendGetBooksError);
+        }
+/*     
         function getAllBooks() {
             logger.output('getting all books');
             var bookArray = [
@@ -42,7 +60,7 @@
             },1000);            
             return deferred.promise;
         };
-
+*/
         function getAllReaders() {
             logger.output('getting all readers');
             var deferred = $q.defer();
@@ -78,5 +96,5 @@
         };
     }
 
-    dataService.$inject = ['$q', '$timeout', 'logger'];
+    dataService.$inject = ['$q', '$timeout', 'logger', '$http', 'constants'];
 }());
