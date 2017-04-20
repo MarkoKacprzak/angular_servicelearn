@@ -61,6 +61,30 @@
             return deferred.promise;
         };
 */
+        function getBookByID(bookID) {
+            return $http({
+                method: 'GET',
+                url: 'api/books/' + bookID
+            })
+                .then(sendResponseData)
+                .catch(sendGetBooksError);
+        }
+        function updateBookSuccess(response) {
+            return 'Book update: ' + response.config.data.title;
+        }
+        function updateBookError(response) {
+            return $q.reject('Error updating book. (HTTP status:' + response.status + ')');
+        }
+        function updateBook(book) {
+            return $http({
+                method: 'PUT',
+                url: 'api/books/' + book.book_id,
+                data: book
+            })
+                .then(updateBookSuccess)
+                .catch(updateBookError);
+        }
+
         function getAllReaders() {
             logger.output('getting all readers');
             var deferred = $q.defer();
@@ -92,7 +116,9 @@
 
         return {
             getAllBooks: getAllBooks,
-            getAllReaders: getAllReaders
+            getAllReaders: getAllReaders,
+            getBookByID: getBookByID,
+            updateBook: updateBook
         };
     }
 
