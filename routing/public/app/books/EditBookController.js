@@ -1,7 +1,7 @@
 (function() {
     "use strict";
 
-    function EditBookController($routeParams, books, $cookies, $cookieStore, dataService, $log, $location) {
+    function EditBookController($routeParams, $cookies, $cookieStore, dataService, $log, $location) {
     //dataService) {
         var vm = this;
        // dataService.getAllBooks()
@@ -41,6 +41,6 @@
        //     });
     }
      angular.module('app')
-        .controller('EditBookController', ['$routeParams', 'books', //dataService,
+        .controller('EditBookController', ['$routeParams', //dataService,
                 '$cookies', '$cookieStore', 'dataService', '$log', '$location', EditBookController]);
 }());
