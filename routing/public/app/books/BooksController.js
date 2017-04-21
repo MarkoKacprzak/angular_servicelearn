@@ -1,4 +1,4 @@
-(function() {
+(function () {
     "use strict";
     angular.module('app')
         .controller('BooksController', ['$q','books', 'dataService', 'logger', 'badgeService', '$cookies', '$cookieStore', '$log', BooksController]);
@@ -41,11 +41,22 @@
         function getAllBookComplete(){
             console.log('Just finished loading books');
         }
+
+        function successResponseData(data, status, headers, config) {
+            getBooksSuccess(data);
+        }
+        function errorResponseData(data, status, headers, config) {
+            return $q.reject('Error http status:' + status);
+        }
         dataService.getAllBooks()
+            .success(successResponseData)
+            .error(errorResponseData);
+
+/*
             .then(getBooksSuccess, getBooksError, getBooksNotify)
             .catch(errorCallback)
             .finally(getAllBookComplete);
-
+*/
         function getReadersSuccess(readers) {
             vm.allReaders = readers;
         }

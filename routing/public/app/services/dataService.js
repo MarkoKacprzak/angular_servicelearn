@@ -16,11 +16,11 @@
                 headers: {
                     'PS-BookLogger-Version': constants.APP_VERSION
                 }
-            })
-                .then(sendResponseData)
-                .catch(sendGetBooksError);
+            });
+                //.then(sendResponseData)
+                //.catch(sendGetBooksError);
         }
-/*     
+/*
         function getAllBooks() {
             logger.output('getting all books');
             var bookArray = [
@@ -57,7 +57,7 @@
                 else {
                     deferred.reject('Error retrieving books.');
                 }
-            },1000);            
+            },1000);
             return deferred.promise;
         };
 */
