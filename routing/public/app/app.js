@@ -22,10 +22,11 @@
         };
     }]);
 
-    app.config(['$routeProvider','booksProvider', 'constants', 'badgeServiceProvider', '$logProvider', function ($routeProvider, booksProvider, constants, badgeServiceProvider, $logProvider) {
+    app.config(['$routeProvider','booksProvider', 'constants', 'badgeServiceProvider', '$logProvider', '$httpProvider', function ($routeProvider, booksProvider, constants, badgeServiceProvider, $logProvider, $httpProvider) {
         booksProvider.setIncludeVersionInTitle(true);
-        $logProvider.debugEnabled(false);
+        $logProvider.debugEnabled(true);
 
+        $httpProvider.interceptors.push('bookLoggerInterceptor');
         console.log('title from constants services ' + constants.APP_TITLE);
         console.log(badgeServiceProvider.$get().retrieveBadge(0));
         $routeProvider
