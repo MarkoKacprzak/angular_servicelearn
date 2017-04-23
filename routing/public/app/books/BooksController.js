@@ -1,9 +1,9 @@
 (function() {
     "use strict";
     angular.module('app')
-        .controller('BooksController', ['$q','books', 'dataService', 'logger', 'badgeService', '$cookies', '$cookieStore', '$log', BooksController]);
+        .controller('BooksController', ['$q','books', 'dataService', 'logger', 'badgeService', '$cookies', '$cookieStore', '$log', '$route', BooksController]);
 
-    function BooksController($q, books, dataService, logger, badgeService, $cookies, $cookieStore, $log) {
+    function BooksController($q, books, dataService, logger, badgeService, $cookies, $cookieStore, $log, $route) {
         var vm = this;
         vm.appName = books.appName;
         var booksPromise = dataService.getAllBooks();
@@ -57,6 +57,20 @@
             .then(getReadersSuccess)
             .catch(errorCallback)
             .finally(getAllReadersComplete);
+
+        function deleteBooksSuccess(message) {
+            $log.info(message);
+            $route.reload();
+        }
+        function deleteBooksError(errorMessage) {
+            $log.error(errorMessage);
+        }
+
+        vm.deleteBook = function (bookID) {
+            dataService.deleteBook(bookID)
+                .then(deleteBooksSuccess)
+                .catch(deleteBooksError);
+        };
 
         vm.getBadge = badgeService.retrieveBadge;
         vm.favoriteBook = $cookies.favoriteBook;
