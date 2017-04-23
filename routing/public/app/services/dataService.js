@@ -11,6 +11,15 @@
         function sendGetBooksError(response) {
             return $q.reject('Error retrieving books(s). (HTTP status: ' + response.status + ')');
         }
+/* transform Region */
+        function transformGetBooks(data, headersGetter) {
+            var transformed = angular.fromJson(data);
+            transformed.forEach(function (currentValue, index, array) {
+                currentValue.dateDownloaded = new Date();
+            });
+            console.log(transformed);
+            return transformed;
+        }
 
 /* getAllBooks Region */
         function getAllBooks() {
@@ -19,7 +28,8 @@
                 url: 'api/books',
                 headers: {
                     'PS-BookLogger-Version': constants.APP_VERSION
-                }
+                },
+                transformResponse: transformGetBooks
             })
                 .then(sendResponseData)
                 .catch(sendGetBooksError);
@@ -70,8 +80,17 @@
         function addBookError(response) {
             return $q.reject('Error adding book. (HTTP status: ' + response.status + ')');
         }
+/* transform Request */
+        function transformPostRequest(data, headersGetter){
+            data.newBook = true;
+           debugger;
+             console.log(data);
+            return JSON.stringify(data);
+        }
         function addBook(newBook) {
-            return $http.post('api/books', newBook)
+            return $http.post('api/books', newBook, {
+                transformRequest: transformPostRequest
+            })
                 .then(addBookSuccess)
                 .catch(addBookError);
         }
