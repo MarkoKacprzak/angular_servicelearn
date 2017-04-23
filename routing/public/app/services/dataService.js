@@ -27,10 +27,7 @@
 
 /* getBookByID Region */
         function getBookByID(bookID) {
-            return $http({
-                method: 'GET',
-                url: 'api/books/' + bookID
-            })
+            return $http.get('api/books/' + bookID)
                 .then(sendResponseData)
                 .catch(sendGetBooksError);
         }
@@ -74,11 +71,7 @@
             return $q.reject('Error adding book. (HTTP status: ' + response.status + ')');
         }
         function addBook(newBook) {
-            return $http({
-                method: 'POST',
-                url: 'api/books',
-                data: newBook
-            })
+            return $http.post('api/books', newBook)
                 .then(addBookSuccess)
                 .catch(addBookError);
         }
