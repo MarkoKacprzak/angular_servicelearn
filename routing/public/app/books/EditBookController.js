@@ -48,6 +48,7 @@
                 .catch(updateBookError);
             */
             vm.currentBook.$update();
+            dataService.deleteSummaryFromCache();
             $location.path('/');
         };
 

@@ -2,8 +2,55 @@
     "use strict";
     angular.module('app')
         .factory('dataService', dataService);
-    function dataService($q, $timeout, logger, $http, constants) {
+    function dataService($q, $timeout, logger, $http, constants, $cacheFactory) {
 
+    /* region for cache object sample */
+        function getUserSummary() {
+            var deferred = $q.defer();
+
+            var dataCache = $cacheFactory.get('bookLoggerCache');
+            // if undefined
+            if (!dataCache){
+                dataCache = $cacheFactory('bookLoggerCache');
+            }
+
+            var summaryFromCache = dataCache.get('summary');
+            if (summaryFromCache) {
+                console.log('returning summary from cache');
+                deferred.resolve(summaryFromCache);
+            } else {
+
+                console.log('gethering new summary data');
+
+                var booksPromise = getAllBooks();
+                var readersPromise = getAllReaders();
+
+                $q.all([booksPromise, readersPromise])
+                    .then(function (bookLoggerData) {
+
+                        var allBooks = bookLoggerData[0];
+                        var allReaders = bookLoggerData[1];
+
+                        var grandTotalMinutes = 0;
+                        allReaders.forEach(function (currentReader, index, array) {
+                            grandTotalMinutes += currentReader.totalMinutesRead;
+                        });
+
+                        var summaryData = {
+                            bookCount: allBooks.length,
+                            readerCount: allReaders.length,
+                            grandTotalMinutes: grandTotalMinutes
+                        };
+                        dataCache.put('summary', summaryData);
+                        deferred.resolve(summaryData);
+                    });
+            }
+            return deferred.promise;
+        }
+        function deleteSummaryFromCache() {
+            var dataCache = $cacheFactory.get('bookLoggerCache');
+            dataCache.remove('summary');
+        }
 /* general promise Region */
         function sendResponseData(response) {
             return response.data;
@@ -50,6 +97,7 @@
             return $q.reject('Error updating book. (HTTP status:' + response.status + ')');
         }
         function updateBook(book) {
+            deleteSummaryFromCache();
             return $http({
                 method: 'PUT',
                 url: 'api/books/' + book.book_id,
@@ -66,6 +114,7 @@
             return $q.reject('Error deleting book. (HTTP status: ' + response.status + ')');
         }
         function deleteBook(bookID) {
+            deleteSummaryFromCache();
             return $http({
                 method: 'DELETE',
                 url: 'api/books/' + bookID
@@ -87,6 +136,7 @@
             return JSON.stringify(data);
         }
         function addBook(newBook) {
+            deleteSummaryFromCache();
             return $http.post('api/books', newBook, {
                 transformRequest: transformPostRequest
             })
@@ -129,9 +179,11 @@
             getBookByID: getBookByID,
             updateBook: updateBook,
             addBook: addBook,
-            deleteBook: deleteBook
+            deleteBook: deleteBook,
+            getUserSummary: getUserSummary,
+            deleteSummaryFromCache: deleteSummaryFromCache
         };
     }
 
-    dataService.$inject = ['$q', '$timeout', 'logger', '$http', 'constants'];
+    dataService.$inject = ['$q', '$timeout', 'logger', '$http', 'constants', '$cacheFactory'];
 }());

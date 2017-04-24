@@ -6,6 +6,13 @@
     function BooksController($q, books, dataService, logger, badgeService, $cookies, $cookieStore, $log, $route, BooksResource) {
         var vm = this;
         vm.appName = books.appName;
+
+        function getUserSummarySuccess(summaryData){
+            console.log(summaryData);
+            vm.summaryData = summaryData;
+        }
+        dataService.getUserSummary()
+            .then(getUserSummarySuccess);
         /*
         var booksPromise = dataService.getAllBooks();
         var readerssPromise = dataService.getAllReaders();
