@@ -1,11 +1,12 @@
 (function() {
     "use strict";
     angular.module('app')
-        .controller('BooksController', ['$q','books', 'dataService', 'logger', 'badgeService', '$cookies', '$cookieStore', '$log', '$route', BooksController]);
+        .controller('BooksController', ['$q','books', 'dataService', 'logger', 'badgeService', '$cookies', '$cookieStore', '$log', '$route', 'BooksResource', BooksController]);
 
-    function BooksController($q, books, dataService, logger, badgeService, $cookies, $cookieStore, $log, $route) {
+    function BooksController($q, books, dataService, logger, badgeService, $cookies, $cookieStore, $log, $route, BooksResource) {
         var vm = this;
         vm.appName = books.appName;
+        /*
         var booksPromise = dataService.getAllBooks();
         var readerssPromise = dataService.getAllReaders();
         
@@ -16,12 +17,15 @@
         function getAllDataError(reason){
             console.log(reason);
         }
-        /*
         $q.all([booksPromise, readerssPromise])
             .then(getAllDataSuccess)
             .catch(getAllDataError);
             */
         //vm.allBooks = dataService.getAllBooks();
+        function errorCallback(message) {
+            console.log('Some Error: ' + message);
+        }
+        /*
         function getBooksSuccess(books) {
             vm.allBooks = books;
             vm.allBooks.forEach(function (element) {
@@ -32,9 +36,6 @@
             console.log(message);
             throw 'error in getBooksError';
         } 
-        function errorCallback(message) {
-            console.log('Some Error: ' + message);
-        }
         function getBooksNotify(notifyMessafe) {
            console.log(notifyMessafe);
         }
@@ -45,7 +46,8 @@
             .then(getBooksSuccess, getBooksError, getBooksNotify)
             .catch(errorCallback)
             .finally(getAllBookComplete);
-
+            */
+        vm.allBooks = BooksResource.query();
         function getReadersSuccess(readers) {
             vm.allReaders = readers;
         }

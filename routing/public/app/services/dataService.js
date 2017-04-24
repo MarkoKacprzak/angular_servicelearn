@@ -83,8 +83,7 @@
 /* transform Request */
         function transformPostRequest(data, headersGetter){
             data.newBook = true;
-           debugger;
-             console.log(data);
+            console.log(data);
             return JSON.stringify(data);
         }
         function addBook(newBook) {

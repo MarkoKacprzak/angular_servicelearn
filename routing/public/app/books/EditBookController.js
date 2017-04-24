@@ -1,7 +1,7 @@
 (function() {
     "use strict";
 
-    function EditBookController($routeParams, $cookies, $cookieStore, dataService, $log, $location) {
+    function EditBookController($routeParams, $cookies, $cookieStore, dataService, $log, $location, BooksResource) {
     //dataService) {
         var vm = this;
        // dataService.getAllBooks()
@@ -10,6 +10,7 @@
         vm.currentBook = books.filter(function (item) {
             return item.book_id == $routeParams.bookID;
         })[0]; */
+        /*
         function getBookSuccess(book) {
             vm.currentBook = book;
             $cookieStore.put('lastEdited', vm.currentBook);
@@ -20,7 +21,18 @@
         dataService.getBookByID($routeParams.bookID)
             .then(getBookSuccess)
             .catch(getBookError);
-
+        */
+        function saveLastEdited(book) {
+            $cookieStore.put('lastEdited', book);
+        }
+        /* resource service */
+        vm.currentBook = BooksResource.get({'book_id': $routeParams.bookID});
+        vm.currentBook.$promise
+            .then(saveLastEdited);
+        $log.log(vm.currentBook.toJSON());
+    //    debugger;
+        $log.log(vm.currentBook);
+        /*
         function updateBookSuccess(message) {
             $log.info(message);
             $location.path('/');
@@ -28,10 +40,15 @@
         function updateBookError(errorMessage){
             $log.error(errorMessage);
         }
+        */
         vm.saveBook = function () {
+            /*
             dataService.updateBook(vm.currentBook)
                 .then(updateBookSuccess)
                 .catch(updateBookError);
+            */
+            vm.currentBook.$update();
+            $location.path('/');
         };
 
         vm.setAsFavorite = function () {
@@ -42,5 +59,5 @@
     }
      angular.module('app')
         .controller('EditBookController', ['$routeParams', //dataService,
-                '$cookies', '$cookieStore', 'dataService', '$log', '$location', EditBookController]);
+                '$cookies', '$cookieStore', 'dataService', '$log', '$location', 'BooksResource', EditBookController]);
 }());
