@@ -1,7 +1,7 @@
 (function() {
     "use strict";
 
-    function EditBookController($routeParams, $cookies, $cookieStore, dataService, $log, $location, BooksResource) {
+    function EditBookController($routeParams, $cookies, $cookieStore, dataService, $log, $location, BooksResource, currentUser) {
     //dataService) {
         var vm = this;
        // dataService.getAllBooks()
@@ -23,7 +23,8 @@
             .catch(getBookError);
         */
         function saveLastEdited(book) {
-            $cookieStore.put('lastEdited', book);
+            //$cookieStore.put('lastEdited', book);
+            currentUser.lastBookEdited = book;
         }
         /* resource service */
         vm.currentBook = BooksResource.get({'book_id': $routeParams.bookID});
@@ -60,5 +61,5 @@
     }
      angular.module('app')
         .controller('EditBookController', ['$routeParams', //dataService,
-                '$cookies', '$cookieStore', 'dataService', '$log', '$location', 'BooksResource', EditBookController]);
+                '$cookies', '$cookieStore', 'dataService', '$log', '$location', 'BooksResource', 'currentUser', EditBookController]);
 }());
