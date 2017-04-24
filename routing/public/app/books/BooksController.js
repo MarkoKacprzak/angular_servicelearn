@@ -32,7 +32,7 @@
         function errorCallback(message) {
             console.log('Some Error: ' + message);
         }
-        /*
+
         function getBooksSuccess(books) {
             vm.allBooks = books;
             vm.allBooks.forEach(function (element) {
@@ -53,8 +53,8 @@
             .then(getBooksSuccess, getBooksError, getBooksNotify)
             .catch(errorCallback)
             .finally(getAllBookComplete);
-            */
-        vm.allBooks = BooksResource.query();
+            
+       // vm.allBooks = BooksResource.query();
         function getReadersSuccess(readers) {
             vm.allReaders = readers;
         }

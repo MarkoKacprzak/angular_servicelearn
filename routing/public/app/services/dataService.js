@@ -76,12 +76,20 @@
                 headers: {
                     'PS-BookLogger-Version': constants.APP_VERSION
                 },
-                transformResponse: transformGetBooks
+                transformResponse: transformGetBooks,
+                cache: true
             })
                 .then(sendResponseData)
                 .catch(sendGetBooksError);
         }
-
+        function deleteCache(){
+            deleteSummaryFromCache();
+            deleteAllBooksResponeFromCache();
+        }
+        function deleteAllBooksResponeFromCache() {
+            var httpCache = $cacheFactory.get('$http');
+            httpCache.remove('api/books');
+        }
 /* getBookByID Region */
         function getBookByID(bookID) {
             return $http.get('api/books/' + bookID)
@@ -97,7 +105,7 @@
             return $q.reject('Error updating book. (HTTP status:' + response.status + ')');
         }
         function updateBook(book) {
-            deleteSummaryFromCache();
+            deleteCache();
             return $http({
                 method: 'PUT',
                 url: 'api/books/' + book.book_id,
@@ -114,7 +122,7 @@
             return $q.reject('Error deleting book. (HTTP status: ' + response.status + ')');
         }
         function deleteBook(bookID) {
-            deleteSummaryFromCache();
+            deleteCache();
             return $http({
                 method: 'DELETE',
                 url: 'api/books/' + bookID
@@ -136,7 +144,7 @@
             return JSON.stringify(data);
         }
         function addBook(newBook) {
-            deleteSummaryFromCache();
+            deleteCache();
             return $http.post('api/books', newBook, {
                 transformRequest: transformPostRequest
             })
@@ -181,7 +189,7 @@
             addBook: addBook,
             deleteBook: deleteBook,
             getUserSummary: getUserSummary,
-            deleteSummaryFromCache: deleteSummaryFromCache
+            deleteCache: deleteCache
         };
     }
 
