@@ -57,6 +57,8 @@
        // vm.allBooks = BooksResource.query();
         function getReadersSuccess(readers) {
             vm.allReaders = readers;
+            $log.log('All readers retrieved');
+            $log.awesome('All readers retrieved');
         }
         function getAllReadersComplete(){
             console.log('Just finished loading readers');
