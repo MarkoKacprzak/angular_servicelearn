@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/public/assets/js/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 17);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -74,10 +74,11 @@
     "use strict";
 
     var angular = __webpack_require__(4);
-    var app = angular.module('app', [__webpack_require__(2)]);
-
+    var ngRoute = __webpack_require__(2);
+    var app = angular.module('app', [ngRoute]);
     __webpack_require__(12)(app);
     __webpack_require__(8)(app);
+
     app.provider('books', ['constants', function (constants) {
         this.$get = function () {
             var appName = constants.APP_TITLE;
@@ -104,15 +105,17 @@
         console.log('title from constants services ' + constants.APP_TITLE);
         console.log(badgeServiceProvider.$get().retrieveBadge(0));
         $routeProvider.when('/', {
-            template: __webpack_require__(15),
+            template: __webpack_require__(14),
             controller: 'BooksController',
             controllerAs: 'books'
         }).when('/AddBook', {
-            template: __webpack_require__(14),
+            template: '<h1>asdsadasasd</h1>',
+            //require('./templates/addBook.html'),
             controller: 'AddBookController',
             controllerAs: 'addBook'
         }).when('/EditBook/:bookID', {
-            template: __webpack_require__(16),
+            template: '<h1>asdsadasasd</h1>',
+            //   template: require('./templates/editBook.html'),
             controller: 'EditBookController',
             controllerAs: 'bookEditor'
         }).otherwise('/');
@@ -34765,9 +34768,9 @@ module.exports = function (app) {
 module.exports = function (app) {
     "use strict";
 
-    app.controller('BooksController', ['$q', 'books', 'dataService', 'logger', 'badgeService', BooksController]);
+    app.controller('BooksController', ['$q', 'books', 'dataService', 'logger', 'badgeService', '$route', '$log', BooksController]);
 
-    function BooksController($q, books, dataService, logger, badgeService) {
+    function BooksController($q, books, dataService, logger, badgeService, $route, $log) {
         var vm = this;
         vm.appName = books.appName;
         var booksPromise = dataService.getAllBooks();
@@ -34780,6 +34783,11 @@ module.exports = function (app) {
         function getAllDataError(reason) {
             console.log(reason);
         }
+        vm.refresh = function () {
+            $log.debug($route.current);
+            $log.debug($route.routes);
+            $route.reload();
+        };
         $q.all([booksPromise, readerssPromise]).then(getAllDataSuccess).catch(getAllDataError);
         //vm.allBooks = dataService.getAllBooks();
         /*
@@ -35012,22 +35020,10 @@ module.exports = function (app) {
 /* 14 */
 /***/ (function(module, exports) {
 
-module.exports = "<h3>Add Book</h3>\r\n\r\n<form class=\"form-horizontal\" role=\"form\">\r\n    <div class=\"form-group\">\r\n        <label for=\"bookTitle\" class=\"col-sm-1 control-label\">Title</label>\r\n        <div class=\"col-sm-4\">\r\n            <input type=\"text\" class=\"form-control\" id=\"bookTitle\" placeholder=\"Title\">\r\n        </div>\r\n    </div>\r\n    <div class=\"form-group\">\r\n        <label for=\"bookAuthor\" class=\"col-sm-1 control-label\">Author</label>\r\n        <div class=\"col-sm-4\">\r\n            <input type=\"text\" class=\"form-control\" id=\"bookAuthor\" placeholder=\"Author\">\r\n        </div>\r\n    </div>\r\n    <div class=\"form-group\">\r\n        <label for=\"bookPublished\" class=\"col-sm-1 control-label\">Year</label>\r\n        <div class=\"col-sm-4\">\r\n            <input type=\"text\" class=\"form-control\" id=\"bookPublished\" placeholder=\"Year Published\">\r\n        </div>\r\n    </div>\r\n    <div class=\"form-group\">\r\n        <div class=\"col-sm-offset-1 col-sm-5\">\r\n            <button class=\"btn btn-default\">Save</button>\r\n        </div>\r\n    </div>\r\n</form>"
+module.exports = "<h3>All Books</h3>\r\n<div>\r\n    <ul>\r\n        <li ng-repeat=\"book in books.allBooks\">{{book.title}} - {{book.author}} <a href=\"#/EditBook/{{book.book_id}}\">Edit</a> </li>\r\n    </ul>\r\n</div>\r\n\r\n<a href=\"#/AddBook\">Add New Book</a>\r\n\r\n<h3>All Readers</h3>\r\n<div>\r\n    <ul>\r\n        <li ng-repeat=\"reader in books.allReaders\">{{reader.name}} - {{books.getBadge(reader.totalMinutesRead)}}</li>\r\n    </ul>\r\n</div>\r\n <button ng-click=\"books.refresh()\" class=\"btn btn-primary\">Refresh</button>\r\n"
 
 /***/ }),
 /* 15 */
-/***/ (function(module, exports) {
-
-module.exports = "<h3>All Books</h3>\r\n<div>\r\n    <ul>\r\n        <li ng-repeat=\"book in books.allBooks\">{{book.title}} - {{book.author}} <a href=\"#/EditBook/{{book.book_id}}\">Edit</a> </li>\r\n    </ul>\r\n</div>\r\n\r\n<a href=\"#/AddBook\">Add New Book</a>\r\n\r\n<h3>All Readers</h3>\r\n<div>\r\n    <ul>\r\n        <li ng-repeat=\"reader in books.allReaders\">{{reader.name}} - {{books.getBadge(reader.totalMinutesRead)}}</li>\r\n    </ul>\r\n</div>\r\n"
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports) {
-
-module.exports = "<h3>Edit Book</h3>\r\n\r\n<form class=\"form-horizontal\" role=\"form\">\r\n    <div class=\"form-group\">\r\n        <label for=\"bookTitle\" class=\"col-sm-1 control-label\">Title</label>\r\n        <div class=\"col-sm-4\">\r\n            <input ng-model=\"bookEditor.currentBook.title\" type=\"text\" class=\"form-control\" id=\"bookTitle\" \r\n                placeholder=\"Title\">\r\n        </div>\r\n    </div>\r\n    <div class=\"form-group\">\r\n        <label for=\"bookAuthor\" class=\"col-sm-1 control-label\">Author</label>\r\n        <div class=\"col-sm-4\">\r\n            <input ng-model=\"bookEditor.currentBook.author\" type=\"text\" class=\"form-control\" id=\"bookAuthor\" \r\n                placeholder=\"Author\">\r\n        </div>\r\n    </div>\r\n    <div class=\"form-group\">\r\n        <label for=\"bookPublished\" class=\"col-sm-1 control-label\">Year</label>\r\n        <div class=\"col-sm-4\">\r\n            <input ng-model=\"bookEditor.currentBook.yearPublished\" type=\"text\" class=\"form-control\" id=\"bookPublished\" \r\n                    placeholder=\"Year Published\">\r\n        </div>\r\n    </div>\r\n    <div class=\"form-group\">\r\n        <div class=\"col-sm-offset-1 col-sm-5\">\r\n            <button class=\"btn btn-default\">Save</button>\r\n       </div>\r\n    </div>\r\n</form>"
-
-/***/ }),
-/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(0);

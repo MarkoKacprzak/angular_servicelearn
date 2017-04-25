@@ -1,8 +1,8 @@
 module.exports = function (app) {
     "use strict";
-    app.controller('BooksController', ['$q','books', 'dataService', 'logger', 'badgeService', BooksController]);
+    app.controller('BooksController', ['$q','books', 'dataService', 'logger', 'badgeService', '$route', '$log', BooksController]);
 
-    function BooksController($q, books, dataService, logger, badgeService) {
+    function BooksController($q, books, dataService, logger, badgeService, $route, $log) {
         var vm = this;
         vm.appName = books.appName;
         var booksPromise = dataService.getAllBooks();
@@ -15,6 +15,11 @@ module.exports = function (app) {
         function getAllDataError(reason){
             console.log(reason);
         }
+        vm.refresh = function () {
+            $log.debug($route.current);
+            $log.debug($route.routes);
+            $route.reload();
+        };
         $q.all([booksPromise, readerssPromise])
             .then(getAllDataSuccess)
             .catch(getAllDataError);
