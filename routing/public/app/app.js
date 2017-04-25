@@ -27,7 +27,8 @@
         };
     }]);
 
-    app.config(['$routeProvider','booksProvider', 'constants', 'badgeServiceProvider', function ($routeProvider, booksProvider, constants, badgeServiceProvider) {
+    app.config(['$routeProvider','booksProvider', 'constants', 'badgeServiceProvider','$locationProvider', function ($routeProvider, booksProvider, constants, badgeServiceProvider, $locationProvider) {
+        $locationProvider.hashPrefix('');
         booksProvider.setIncludeVersionInTitle(true);
         console.log('title from constants services ' + constants.APP_TITLE);
         console.log(badgeServiceProvider.$get().retrieveBadge(0));
